@@ -28,18 +28,30 @@
         e.5) with switch or goto
     
     *f) When a function is defined in the class body, it becomes the candidate of 
-        an inline function automatically
+    an inline function automatically
 
 **3. constructor**
-    Complex(double r = 0, double i = 0 ):
 
-        re(r), im(r)
+    Complex(double r = 0, double i = 0 ):   
 
-        {   }
+        re(r), im(r)                    //initialization list      
+
+        {   }                           //function body
 
     3.1) construct an object using <default argument>: 
 
-         Complex c1 //we use default 
+         Complex c1; 
 
     3.2) contruct an  object using all arguments
+
+        Complex c2(1,2);
+    
+    3.3) construct an object dynamically in the heap
+        Complex *pc = new Complex(4);
+
+    3.4) Rules I : when specify the default argument, the right side argument must be specified
+    before you try to specify the left argument's default argument
+
+    3.5) Rule II:  when construct a class, the left side argument must be given before the value
+    given to the right side argument 
     
