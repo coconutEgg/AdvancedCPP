@@ -102,7 +102,122 @@
         return *ths;    //*ths as the returner, it does not need to know the type of the acceptor (value or reference)
     }
 
-    If allowed, we much prefer using return by reference rather than return by value
+    If allowed, we much prefer using return by reference rather than return by value.
+
+
+**7. friend**
+    
+    7.1) A friend of a class can access all the private and protected members of the class
+
+    7.2) Example of a friend function:
+
+    friend complex& _doapl( Complex*, const Complex &);
+
+    7.3) If multiple objects are from the same class, then they are friends to each other
+
+        Example:
+
+            class A 
+            {
+
+                public:
+
+                    int func const( const A& a )
+                    {
+
+                        return a.val;
+
+                    }
+
+            };
+
+            int main()
+
+            {
+
+                A a1;
+
+                A a2;
+
+                a1.func(a2); //successful.
+
+            }
+
+
+**8. Basic Principal for Designing a Class**
+
+8.1) Store the data in the private
+
+8.2) Pass by reference as primary selection
+
+8.3) Return by reference as primary selection
+
+8.4) Add const keyword when properly
+
+8.5) use initialization in constructor
+
+
+**9. Basic Operator Overloading**
+
+9.1) Example 1: member function
+
+    inline Complex& operator+=( const Complex & ) //overload the operator +=
+    {
+       
+        return _doapl(this, r);
+
+    }
+
+
+    here we return Complex& (reference) is for chaining calling:
+
+    Complex c1, c2, c3;
+
+    c1 += c2 += c1;
+
+9.2) Example 2: non-member function
+
+    inline Complex operator+ (const Complex &x, const Complex &y) //overload the operator +=
+    {
+
+        return Complex( x.real() + y.real() );
+
+    }
+
+9.3) Important Difference between 2 constructors: 
+    
+    In the Example 1, we use return by reference for 2 reason: efficiency and this pointer. The this pointer means that we return the object itself which will not 
+    end its lifecycle after this function calling, so we can do it.
+
+    In the Example 2, we must return by value for only 1 reason: the lifecycle of a temporary object in the function will end after returned from function.
+
+
+9.4) An important function must be declared as global function (non-member)
+
+    ostream& operator<< (ostream &os, const Complex& ) //os cannot be const, because we modify os when call os<<
+    {
+
+        ...;
+
+        return os;
+
+    }
+
+9.5) Other examples:
+
+    inline Complex operator+ (const Complex& x, const Complex& y ){};
+
+    inline Complex operator+ (const Complex& x, const double& y ){};
+
+    inline Complex operator+ (double &x, const Complex& y){};
+
+    inline  bool operator== (const Complex& x, const Complex& y){};
+
+    inline bool operator== (const Complex &x, const double &y ){};
+
+    inline bool operator== (const double& x, const Complex& y){};
 
 
 
+
+    
