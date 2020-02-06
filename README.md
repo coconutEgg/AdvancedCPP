@@ -32,7 +32,7 @@
     *f) When a function is defined in the class body, it becomes the candidate of 
     an inline function automatically
 
-**3. constructor**
+**3. constructor basics**
 
     Complex(double r = 0, double i = 0 ):   
 
@@ -58,3 +58,26 @@
     given to the right side argument 
     
     3.6) Rule III: when construction, use the initialization list to improve the efficiency
+
+    3.7) Rule IV: for the class without pointer member, we usually do not need to write destructor
+
+**4. constructor overloading**
+
+    4.1) Error : overloading Complex(int i = 0, int r = 0) by Complex() --- Compiler will report an error of ambiguity
+
+    4.2) Private Constructor: it will be used in the design pattern of Singleton
+
+    4.3) const keyword after function argument list: we MUST remember to add keyword *const* after the function argument list if the 
+        function is read only! It is very very very important. For example:
+
+        const Complex c(1,2);
+
+        c.print();  //compiler will report an error if the print is now a const function, because const object cannot call a member function without const as the keyword
+    
+    4.4) it will be disccussed more in the later part
+
+
+**5. Pass by value VS pass by reference**
+
+
+
