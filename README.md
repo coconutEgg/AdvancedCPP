@@ -1,3 +1,5 @@
+## If you can read this list before the C++ interview, I think you can overcome it!
+
 
 **1. Class can be divided into two categories:**
 
@@ -55,3 +57,4 @@
     3.5) Rule II:  when construct a class, the left side argument must be given before the value
     given to the right side argument 
     
+    3.6) Rule III: when construction, use the initialization list to improve the efficiency
