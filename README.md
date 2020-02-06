@@ -5,7 +5,7 @@
 
     1.1 Class Without Pointers --- Complex
     1.2 Class With Pointers ---- String
-    
+
 
 **2. inline function:**
 
@@ -81,6 +81,28 @@
 
 
 **5. Pass by value VS pass by reference**
+
+    5.1) Pass by Value: pushing into the stack occur, low efficiency
+
+    5.2) Pass by reference
+
+    5.3) Pass by reference to const :
+
+        Complex& operator+= (const Complex& c){...} //then the passed value cannot be modified in the function body
+
+    5.4) We need to remember we MUST use *const* keyword if we should use in case of some unexpected situations
+
+**6. Return by reference VS Return by Value** 
+
+    6.1) Return by Reference example
+
+    inline Complex& _doapl(Complex *ths, const Complex &x)
+    {
+        ...
+        return *ths;    //*ths as the returner, it does not need to know the type of the acceptor (value or reference)
+    }
+
+    If allowed, we much prefer using return by reference rather than return by value
 
 
 
