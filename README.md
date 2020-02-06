@@ -5,6 +5,7 @@
 
     1.1 Class Without Pointers --- Complex
     1.2 Class With Pointers ---- String
+    
 
 **2. inline function:**
 
@@ -31,6 +32,7 @@
     
     *f) When a function is defined in the class body, it becomes the candidate of 
     an inline function automatically
+
 
 **3. constructor basics**
 
@@ -60,6 +62,7 @@
     3.6) Rule III: when construction, use the initialization list to improve the efficiency
 
     3.7) Rule IV: for the class without pointer member, we usually do not need to write destructor
+
 
 **4. constructor overloading**
 
