@@ -1,8 +1,9 @@
-1. Class can be divided into two categories:
+#Categories of a Class 
+**1. Class can be divided into two categories:**
     1.1 Class Without Pointers --- Complex
     1.2 Class With Pointers ---- String
 
-2. inline function: 
+**2. inline function:**
     a) Functions expanded in line when it is called inline function. 
     b) When the inline function is called, whole code of the inline function
         gets inserted or substituted at the point of inline function call.
@@ -17,4 +18,12 @@
     
     *f) When a function is defined in the class body, it becomes the candidate of 
         an inline function automatically
+
+3. constructor
+    Complex(double r = 0, double i = 0 ):
+        re(r), im(r)
+        {   }
+    3.1) construct an object using <default argument>: 
+         Complex c1 //we use default 
+    3.2) contruct an  
     
