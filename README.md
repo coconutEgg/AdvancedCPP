@@ -220,7 +220,7 @@
 
 **10. Class with Pointers**
 
-    ***Big three in the Class with pointer : (1)Copy Constructor, (2)Copy Assignment (operator= overwrite) (3)Destructor***
+    ***Big threes in the Class with pointer : (1)Copy Constructor, (2)Copy Assignment (operator= overwrite) (3)Destructor***
 
     10.1 For class without pointers like Complex, if we do not decalre a copy constructor, the compiler will automatically define a deep copy constructor for us.
 
@@ -251,9 +251,139 @@
 
             delete p; //only call once destructor, which cannot clear all the dynamically allocated memory for the array of String objects, and memory leak happens.
 
+
+            Actually both delete and deletep[] free the pointer(s), the difference is the times of destructor called. 
+
+
     10.4 Why copy assignment needed?
 
-            Avoid the memory leak. If we have 2 String objects S1 and S2, and the String class does not have copy assignment, what happened when S1 = S2 is that the data pointer in the S1 changes to point to the data block pointed byt he S2, and the memory block of S1 is not correctly freed, which causes the the memory leak. 
+            Avoid the memory leak. If we have 2 String objects S1 and S2, and the String class does not have copy assignment, what happened when S1 = S2 is that the data pointer in the S1 changes 
+            
+            to point to the data block pointed byt he S2, and the memory block of S1 is not correctly freed, which causes the the memory leak. 
+
+            
+            ---------------------------------------------------------------------------------------------------------------
+            !!!Self Assignment in Copy Assignment Operator!!!
+
+            String& String::operator=(const String& str)
+            
+            {
+            
+                if( this == & str)      //WE MUST CHECK SELF-ASSIGNMENT CASE HERE!!! VERY IMPORTANT
+            
+                {
+            
+                    return *this;
+            
+                }
+
+                delete [] m_data;
+                
+                m_data = new char[strlen(str.m_data)+1];
+                
+                strcpy(m_data, str.m_data);
+                
+                return *this;
+            
+            }
+
+            Self-Assignment Check is very important in Copy Assignment for 2 reason (1) efficiency: we can return *this in self-assignment case to improve efficiency
+
+            (2)!Safety: If we do not have self-assignment check, we will delete the object itself when calling delete[] m_data, which will free the memory block pointed by the m_data, resulting the memory leak when calling the strcpy();
+
+
+            -------------------------------------------------------------------------------------------------------------
+
+    
+    10.5 Why copy constructor needed?
+
+            For example, when we create a String object using String str2(str1), where str1 is an object from the String class, we hope that our String str2 possesses its data pointer points to an 
+            
+            isolated memory block but not shares the same data block of str1, so we need to implement copy constructor for deep-copy construction. Otherwise, the compiler just adapts shallow copy 
+            
+            by default.
+
+
+**11. Stack vs Heap**
+
+    Stack : (1) a memory space in a scope. When we call a function, the function itself will create a stack to accept its arguments and return address.
+            
+            (2) Any varibale declared in the function body will be stored in the stack
+
+            Eg. 
+
+            Complex c(1,2);
+
+            (3) Life Cycle: stack object, ended when the scope ended automatically. Also called auto object
+
+    Heap:   (1) the global memory space allocated by the OS dynamically.  
+
+            Eg.
+
+            Complex *p = new Complex(3);
+
+            (2) Life Cycle: heap object, ended when the delete is explicitly called.
+
+            Eg.
+
+            int main()
+            
+            {
+                {
+
+                    Complex *p = new Complex;   //memory leak happened, life cycle pointer p ended when the scope is over, and we miss the opportunity of delete the dynamic object after the scope
+
+                }
+
+            }
+
+    static local objects:
+
+            static Complex c(1,2); 
+
+            (1) life cycle: the whole life cycle of the program.
+
+    global objects:
+
+            Complex c(1,2);
+
+            ...
+
+            int main(){} 
+
+            (1) life cycle: the whole life cycle of the program. We can regard it as the global objects
+
+     
+
+**12. new vs delete**
+
+    new:
+
+        Complex *pc = new Complex(1,2); <=========================> void *mem = operator new(sizeof(Complex));
+                                                                    
+                                                                    Complex* pc = static_cast< Complex* > (mem)
+                                                                    
+                                                                    pc->Complex::Complex(1,2);  //Complex::Complex(pc,1 ,2 );  
+                                                                
+        So the new() operation can be separated into 3 steps:   (1) allocate a void* type memory
+
+                                                                (2) Cast the void* type memory into the specific memory type
+
+                                                                (3) call the constructor using the pointer, and the pointer points to the start point of the allocate memory
+
+
+    delete:
+
+        delete <=================================================>  Complex::~Complex(pc);  //call the destructor first
+ 
+                                                                    operator delete(pc);    //internally calls the free(pc) to free the memory
+
+        So the delete() operation can be separated into 2 steps:   (1) call the destructor first    
+
+                                                                   (2) then free the memory pointed by the pointer
+    
+
+
 
 
 

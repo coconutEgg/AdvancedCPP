@@ -1,4 +1,5 @@
 #include "Complex.hpp"
+#include "String.hpp"
 #include <iostream>
 
 int main()
@@ -33,6 +34,18 @@ int main()
     std::cout<<c6<<std::endl;
 
     std::cout<<c5<<c6<<std::endl;
+
+    String str1("hello world");
+
+    std::cout<<str1<<std::endl;
+
+    String str2(str1);
+
+    std::cout<<str2<<std::endl;
+
+    String str3 = str1;
+
+    std::cout<<str3<<std::endl;
     
 
 }
