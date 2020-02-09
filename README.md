@@ -218,6 +218,48 @@
     inline bool operator== (const double& x, const Complex& y){};
 
 
+**10. Class with Pointers**
+
+    ***Big three in the Class with pointer : (1)Copy Constructor, (2)Copy Assignment (operator= overwrite) (3)Destructor***
+
+    10.1 For class without pointers like Complex, if we do not decalre a copy constructor, the compiler will automatically define a deep copy constructor for us.
+
+    10.2 For class with pointers like String, we must declare and define a copy constructor
+
+    10.3 delete vs delete[]
+
+        (1) For an array of objects from a class without pointers (eg. new Complex c[128]), delete and delete[] have the same effect to the array of objects from the class. 
+
+        (2) For an array of objects from a class with pointers (eg. new String c[128]), we have to use delete[] to destruct the array of objects
+
+        (3) Reason:
+
+            Eg.1.
+
+            String* p = new String[3];
+            
+            ......
+
+            delete[] p; //calls 3 times destructors, which makes sure the all the dynamically allocated memory will be cleared
+
+
+            Eg.2.
+
+            String* p = new String[3]
+
+            ....
+
+            delete p; //only call once destructor, which cannot clear all the dynamically allocated memory for the array of String objects, and memory leak happens.
+
+    10.4 Why copy assignment needed?
+
+            Avoid the memory leak. If we have 2 String objects S1 and S2, and the String class does not have copy assignment, what happened when S1 = S2 is that the data pointer in the S1 changes to point to the data block pointed byt he S2, and the memory block of S1 is not correctly freed, which causes the the memory leak. 
+
+
+
+
+
+
 
 
     
