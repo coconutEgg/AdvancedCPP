@@ -381,7 +381,162 @@
         So the delete() operation can be separated into 2 steps:   (1) call the destructor first    
 
                                                                    (2) then free the memory pointed by the pointer
+
+
+**13. static members**
+
+    (1) Only one copy will be retained in the memory for each static members or static functions.
+
+    (2) there is no implicit this pointer as an argument in the static member function
+
+    (3) the static member must be defined outside the class declaration
+
+    (4) static function can only process static data member
+
+    (5) We have 2 ways to call static member functions: 
+                                                        Complex::static_func(); //call by class name and scope solution
+                                                        c.static_func()         //call by the object of the class
+
+    (6) How static is used in the real application design?  Singleton. E.g.
+
+                class Singleton
+               
+                {
+               
+                    public:
+               
+                        static Singleton& getInstance()
+               
+                        {   
+               
+                            static int flag = 0;
+               
+                            if(!flag)
+               
+                            {
+               
+                                std::cout<<"a singleton created\n"<<std::endl;
+               
+                                flag = 1;
+               
+                            }
+
+                            static Singleton s;
+               
+                            return s;
+               
+                        }
+
+                        void setup()
+               
+                        {
+               
+                            n++;
+               
+                        };
+
+                        void print()
+               
+                        {
+               
+                            std::cout << n << std::endl;
+               
+                        }
+
+                    private:
+                
+                        int n;
+                
+                        Singleton( ){};
+                
+                        Singleton(const Singleton &);
+               
+                        void operator=(Singleton const&);
+               
+                };
     
+
+**14. template function vs template class**
+
+    (1) template class
+
+    template <typename T = double>
+    
+    class Complex
+    
+    {
+    
+    public:
+    
+        Complex(T r = 0, T i = 0) : _real(r), _imag(i)
+        
+        {
+        
+        }
+
+    Complex &operator+=(const Complex &r)
+    
+    {
+    
+        real += r.real;
+    
+        imag += r.imag;
+    
+        return *this;
+    
+    }
+
+    T real() const { return _real; }
+
+    T imag() const { return _imag; }
+
+
+    //friend function is just declared here but not defined here, we need to
+    
+    //give it a template arg
+    
+    template <typename U>
+    
+    friend std::ostream &operator<<(std::ostream &os, const Complex<U> &c);
+
+    private:
+    
+    T _real;
+    
+    T _imag;
+
+    };
+
+    (2) template function
+    
+    template <typename T>
+    
+    inline const T& _min(const T &a, const T &b)
+    
+    {
+        
+        return a < b ? a : b;
+    
+    }
+
+    int main()
+    
+    {
+        
+    int a = _min<int>(2,3);
+
+    double b = _min<int>(4,3);
+
+    double c = _min(5,5);   //different from template class, compiler is able to deduce the argument type, and we sometimes do
+                            //not need to explicitly declare the type like _min<int>
+
+    std::cout<<a<<std::endl;
+    
+    std::cout<<b<<std::endl;
+    
+    std::cout<<c<<std::endl;
+
+    }
 
 
 
