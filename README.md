@@ -456,7 +456,7 @@
                 };
     
 
-**14. template function vs template class**
+**14. basic template function vs template class**
 
     (1) template class
 
@@ -537,6 +537,48 @@
     std::cout<<c<<std::endl;
 
     }
+
+    more about template function: 1. in STL <algorithm>, there are many function template
+                                  
+                                  2. For using <algorithm>, we are usually required to complete the operator overloading
+
+
+**14. basic OOP**
+
+    Big three in OOP : Inheritance, Composition, Delegation. These three class relationship are combined to be the foundation of the oop.
+
+    (1) Composition: queue has a deuque, or queue is composed by the deque. More specifically, queue adpats deque's APIs to implement its APIs.
+
+        ===> Design Pattern : Adapator: Created a new class by wrapping an existing class. Wrapping means open or close an API, modify an API, modify API's name and encapsulate a class
+
+        Construction and Destruction of a Composition
+
+            Construction : from internal to external
+
+                            The conatiner calls the componet's default constructor =====> The container calls its constructor
+
+            Destruction:   from external to internal
+
+                            The container calls its destructor =====> The container calls its component destructor
+
+                            --------------------------------------
+                            |                Queue               | 
+                            |              Container             |
+                            |           ---------------          |
+                            |           |             |          |
+                            |           |             |          |
+                            |           |    Deque    |          | 
+                            |           | Components  |          |
+                            |           ---------------          |
+                            |                                    |
+                            --------------------------------------   
+
+
+
+
+
+
+
 
 
 
