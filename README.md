@@ -573,31 +573,214 @@
                             |                                    |
                             --------------------------------------   
 
-    (2) Delegation: class StringRep;
+    (2) Delegation: Also called composition by reference 
+    
+    class StringRep;
 
     class String
+    
     {
+    
     public:
+    
         String();
+    
         String(const char *s);
+    
         String(const String &s);
+    
         String operator=(const String &s);
+    
         ~String();
 
     private:
+    
         StringRep *rep; //pointer to implementation
+    
     };
 
     class StringRep
+    
     {
+        
         StringRep(const char *cstr);
+        
         ~StringRep();
 
         int count;
+        
         char *rep;
 
         friend class String;
+    
     };
+
+    Different from Composition, (1)the delegating object create the delegated object as need.
+
+                                (2)the delegating object and delegated object has the different life cycle
+
+    
+    Application in Real World: Copy On Write
+
+        Reader1 ======> |                       |
+        Reader2 ======> | Shared Resource       |
+        Reader3 ======> |  (reference counting) |
+            |
+            |  Writer1     
+            ---------> | New Resource |  
+    
+    (3) Inheritance
+    
+        1. is-a relationship.
+
+        2. Construction vs Destruction
+
+        Construction: Derived class calls based class default constructor ===> Derived class calls its own constructor
+
+        Destruction : Derived class calls its own destructor ===> Derived class calls base class destructor 
+
+    
+        3.For base class, its destructor must be decalred as virtual!!! Otherwise undefined action will happened. So we should keep a good habit of
+        
+        declaring destructors to be virtual any class may be base sometimes.
+
+
+        class Shape
+
+        {
+            
+        public:
+
+                virtual void draw() const = 0; //for different shape class, they must redefine the draw() 
+
+                virtual void error(const string &msg);  //print the error message, and allow child class to redefine it    
+
+                int objectID() const; //unified ID API for every objects whose base class is Shape
+
+        }
+
+
+        In short words, memeber functions when inheritance can be categorized to 3 types : 
+
+          I.  non-virtual function: does want derived class to redefine it
+
+          II. virtual function: allow derived class to redefine it and has a default definition
+
+          III.pure virtual function: derived class has to redefine it 
+
+    
+    (4) Template Method --- An important OOP Design Pattern, where derived class is reponsible to implement detailed service code (overwrite virtual functions), based class is reponsible to 
+
+        define a framework.
+
+        Eg. MFC
+
+    (5) More about inheritance and composition          Derived
+                                                  _____________________
+             [Base]                              |                     |
+               /|\                               |     [ Base ]        |
+                |                                |                     |
+                |                                |     [Component]     |           
+            [Derived]-------->[ Component ]      |_____________________|                     
+            
+
+            I. When construction: Derived::Derived() : Base(), Component() { ... };
+
+            Calls Component and Base default constructors first and then calls its own constructor
+
+            II. When Destruction: ~Derived(...) : { ... ; ~Component(); ~Base() }
+
+            Calls its own destructor first and then calls Component and Base Default Constructors
+
+                                                        Derived           
+                                                  _____________________
+             [Base]------>[Component]            |    Base             |   
+               /|\                               |   ----------------- |
+                |                                |   |  [Component]  | |     
+                |                                |   |_______________| |              
+            [Derived]                            |_____________________|   
+
+            I. When constructor, Derived::Derived: Component(), Base() {....}; 
+
+            Calls first the Component and then the base, at last the Derived's constructor
+
+            II. When destrucyor, ~Derived::{....; ~Base(); ~Component();}
+
+            Calls first the Derived's destructor, and then the Base destructor, then the Component Destructor
+
+    (6) Observer Design Pattern : An important design pattern using delegation + inheritance
+
+
+        class Observer
+        {
+        public:
+            virtual void update(Subject *sub, int value) = 0;
+        };
+
+        class SubObserver : public Observer
+        {
+        public:
+        SubObserver(Subject *sub = nullptr)
+        {
+            if(sub != nullptr)
+                sub->attach(this);
+        }
+
+        void update(Subject *sub, int value)
+        {
+            std::cout<<"value "<<value<<std::endl;
+        }
+        };
+
+        class Subject
+        {
+        private:
+            int m_value;
+            std::vector<Observer*> m_views;
+
+        public:
+        void attach(Observer* obs)
+        {
+            m_views.push_back(obs);
+        }
+
+        void set_val(int val)
+        {
+            m_value = val;
+            notify();
+        }
+
+        void notify()
+        {
+            for(int i = 0 ; i < m_views.size() ; i ++ )
+        {
+            m_views[i]->update(this, m_value); 
+        }
+    }
+    };
+
+
+
+    int main()
+    {
+        Subject sub;
+        SubObserver obs1;
+        SubObserver obs2;
+        SubObserver obs3;
+
+        sub.attach(&obs1);
+        sub.attach(&obs2);
+        sub.attach(&obs3);
+
+        SubObserver obs4(&sub);
+
+        sub.set_val(10);
+
+      sub.notify();
+    }
+
+
+
 
 
 
