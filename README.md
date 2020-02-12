@@ -875,15 +875,159 @@ int main()
 }
 
 
+**18. advanced template**
+
+argument deduction: compiler will deduce the argument to compile function template.
+
+
+class template:
+
+function template:
+
+member template:
+
+Full specialization
+
+partial specialization : standard specilization VS pointer specilization
+
+variadic templates:
+
+
+**19. auto**
+
+
+
+**20. range-based for**
+
+for( int i : {1, 2, 3, 4, 5})
+{
+    //statement
+    std::cout<<i<<std::endl
+}
+
+for( auto elem : vec)
+{
+    std::cout<< cout
+}
+
+for( auto& elem : vec)
+{
+    ele *= 3
+}
+
+!!!one invalid operation
+
+auto a;
+
+a = find(c.begin(), c.end(), target);
+
+
+**21. reference**
+
+(1) A reference will give us a illusion that its size and address are as same as the referenced object.
+
+(2) In the address space, a reference is internally an address (pointer)
+
+(3) In the user space, a reference is an object
+
+(4) a case where ambiguity happened:
+
+    double imag(const double& im) {...}
+
+    double imag(const double im) {...}
+
+(5) const is also a part of the function signature
+
+
+**22. vtbl vs vptr**
+
+
+
+**23. const**
+
+When 
+    void func() const;
+    void func();
+
+    both exist in a class declaration, the const object can only call the void func() const,
+                                       the non-const object can only call the void func();
+
+**24. new vs delete**
+
+1. overloading the new, delete, new[], delete[] for global environment
+
+inline void* operator new(size_t size)
+{
+    return malloc(size);
+}
+
+inline void* operator new[](size_t size)
+{
+    return malloc(size);
+}
+
+
+inline void operator delete(void* ptr)
+{
+    free(ptr);
+}
+
+inline void operator delete[](void* ptr)
+{
+    free(ptr);
+}
+
+2. overloading new/delete for members
+
+class Foo
+{
+    public:
+
+        void* operator new(size_t);
+        void operator delete(void*, size_t);
+        void* operator new[](size_t)
+        {};
+        void* operator delete[](void*, size_t);
+}
+
+I. Foo *p = new Foo;
+
+===>
+
+try
+{
+        void* mem = operator new(sizeof(Foo));
+        p = static_cast<Foo*>(mem);
+        p->Foo::foo();//N times
+}
+
+
+II. delete p;
+
+p->~Foo();
+operator delete(p);
 
 
 
 
+III. Foo *p = new Foo[N];
+
+===>
+
+try
+{
+        void* mem = operator new(sizeof(Foo) *N + 4);
+        p = static_cast<Foo*>(mem);
+        p->Foo::foo();//N times
+}
 
 
+IV. delete[] p;
 
+===>
 
-
+p->~Foo();  //N times
+operator delete(p);
 
 
 
