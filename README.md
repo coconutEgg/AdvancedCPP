@@ -779,8 +779,100 @@
       sub.notify();
     }
 
+**15. conversion function VS non-explicit-one-argument constructor VS operator Overloading**
+
+    Very ambiguous part, we need to clearly understand it.
 
 
+
+
+
+
+**16. Pointer like classes**
+
+Type I : smart pointer 
+
+template <class T>
+class shared_ptr
+{
+public:
+    //2 special operator overloadings
+    
+    T &operator*() const //dereference
+    {
+        return *px;
+    }
+
+    T &operator->() const
+    {
+        return px;
+    }
+
+    shared_ptr(T& p) : px(p) {}
+
+private:
+    T *px;
+    long *pn;
+};
+
+
+(1) almost all the smart pointer have to implement operator*(), operator->() and shared_ptr(T& p);
+
+(2) We need to be careful about -> operator's continuous chaining property. E.g.
+
+shared_ptr<Foo> sp(new Foo);
+
+Foo f(*sp); //derefence
+
+sp->memthod;   // sp->method() <==> px->method() !!! becasue the continuous chaining property of -> operator
+
+Type II : Iterator
+
+reference operator*() const
+{
+    return (*node).data;
+}
+
+pointer operator->() const
+{
+    return &(operator*());
+}
+
+
+**17. function-like classes**
+
+#include <iostream>
+
+class multiplier
+{
+    private:
+
+    int num;
+
+    public:
+    multiplier(int _num) : num(_num)
+    {}
+
+    int operator()(int n)
+    {
+        return n*num;
+    }
+};
+
+int main()
+{
+    multiplier mult(3);
+
+    std::cout<<mult(3)<<std::endl;
+
+    int a[] = {1, 2, 3, 4, 5};
+
+    for(int i = 0 ; i < 5; i ++ )
+    {
+        std::cout<<mult(a[i])<<std::endl;
+
+    }
+}
 
 
 
