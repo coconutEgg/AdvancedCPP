@@ -998,7 +998,7 @@ try
 {
         void* mem = operator new(sizeof(Foo));
         p = static_cast<Foo*>(mem);
-        p->Foo::foo();//N times
+        p->Foo::foo();
 }
 
 
